@@ -4,6 +4,7 @@ User-visible changes worth mentioning.
 
 ---
 
+- [#769] Revoke Refresh Token on access token creation
 - [#778] Use the remaining time that a token is still valid when building the
   redirect URI for the implicit grant flow
 

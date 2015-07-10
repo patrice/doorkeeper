@@ -29,12 +29,13 @@ ActiveRecord::Schema.define(version: 20151223200000) do
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
     t.integer  "application_id"
-    t.string   "token",             null: false
+    t.string   "token",                               null: false
     t.string   "refresh_token"
     t.integer  "expires_in"
     t.datetime "revoked_at"
-    t.datetime "created_at",        null: false
+    t.datetime "created_at",                          null: false
     t.string   "scopes"
+    t.string   "previous_refresh_token", default: "", null: false
   end
 
   add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
