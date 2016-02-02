@@ -4,9 +4,10 @@ require 'doorkeeper/oauth/client'
 
 class Doorkeeper::OAuth::Client
   describe Credentials do
-    it 'is blank when any of the credentials is blank' do
-      expect(Credentials.new(nil, 'something')).to be_blank
-      expect(Credentials.new('something', nil)).to be_blank
+    it 'is blank only when both credentials are blank' do
+      expect(Credentials.new(nil, 'something')).to_not be_blank
+      expect(Credentials.new('something', nil)).to_not be_blank
+      expect(Credentials.new(nil, nil)).to be_blank
     end
 
     describe :from_request do
@@ -39,7 +40,7 @@ class Doorkeeper::OAuth::Client
 
       it 'returns uid and secret from extractor method' do
         credentials = Credentials.from_request request, method
-        expect(credentials.uid).to    eq('uid')
+        expect(credentials.uid).to eq('uid')
         expect(credentials.secret).to eq('secret')
       end
     end

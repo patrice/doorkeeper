@@ -14,6 +14,13 @@ module Doorkeeper::OAuth
     let(:credentials) { Client::Credentials.new(client.uid, client.secret) }
     let(:client) { FactoryGirl.create(:application) }
     let(:owner)  { double :owner, id: 99 }
+    let(:request) do
+      double(
+          :request,
+          parameters: ActiveSupport::HashWithIndifferentAccess
+                      .new({client_id: client.uid, client_secret: nil})
+      )
+    end
 
     subject do
       PasswordAccessTokenRequest.new(server, credentials, owner)
@@ -23,6 +30,13 @@ module Doorkeeper::OAuth
       expect do
         subject.authorize
       end.to change { client.access_tokens.count }.by(1)
+    end
+
+    it 'does not issue a new token when client uid is present without client secret' do
+      expect do
+        subject.credentials = Client::Credentials.from_request(request, *[:from_params])
+        subject.authorize
+      end.to_not change { Doorkeeper::AccessToken.count }
     end
 
     it 'issues a new token without a client' do

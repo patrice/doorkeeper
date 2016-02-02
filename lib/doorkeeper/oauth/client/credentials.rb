@@ -13,7 +13,7 @@ module Doorkeeper
         end
 
         def blank?
-          uid.blank? || secret.blank?
+          uid.blank? && secret.blank?
         end
       end
     end
